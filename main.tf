@@ -18,11 +18,10 @@ data "docker_image" "flask-project-app" {
 # Run the container using the built image
 resource "docker_container" "flask-project-container" {
   name  = "running-flask-project-v1"
-  image = docker_image.flask-project-app.image_id
-  
+  image = data.docker_image.flask-project-app.image_id
+
   ports {
     internal = 8080
     external = 8080
   }
 }
-
