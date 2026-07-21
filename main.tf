@@ -1,24 +1,25 @@
 terraform {
   required_providers {
     docker = {
-      source = "kreuzwerker/docker"
+      source  = "kreuzwerker/docker"
       version = "~> 4.2.0"
     }
   }
 }
 
-provider "docker" {
+provider "docker" {}
 
-}
-
-data "docker_image" "flask-project-app" {
+resource "docker_image" "flask-project-app" {
   name = "flask-project:v1"
+  build {
+    context    = "."
+    dockerfile = "Dockerfile"
+  }
 }
 
-# Run the container using the built image
 resource "docker_container" "flask-project-container" {
   name  = "running-flask-project-v1"
-  image = data.docker_image.flask-project-app.id
+  image = docker_image.flask-project-app.image_id
 
   ports {
     internal = 8080
