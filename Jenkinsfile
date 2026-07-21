@@ -11,5 +11,12 @@ pipeline {
         sh 'terraform apply -auto-approve'
       }
     }
+    pipeline {
+      agent any
+      triggers {
+        pollSCM('H/2 * * * *')
+      }
+      stages { ... }
+    }
   }
 }
