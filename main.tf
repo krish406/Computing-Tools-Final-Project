@@ -11,12 +11,16 @@ provider "docker" {
 
 }
 
-resource "docker_image" "flask-project-app" {
+data "docker_image" "flask-project-app" {
   name = "flask-project:v1"
-  
-  build {
-    context    = "." 
-    dockerfile = "Dockerfile"
+}
+
+resource "docker_container" "flask-project-container" {
+  name  = "running-flask-project-v1"
+  image = data.docker_image.flask-project-app.image_id
+  ports {
+    internal = 8080
+    external = 8080
   }
 }
 
